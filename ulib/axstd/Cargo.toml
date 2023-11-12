@@ -74,4 +74,4 @@ arceos_api = { path = "../../api/arceos_api" }
 axio = { path = "../../crates/axio" }
 axerrno = { path = "../../crates/axerrno" }
 spinlock = { path = "../../crates/spinlock" }
-hashbrown = "0.9.1"
+hashbrown = "0.14.2"
