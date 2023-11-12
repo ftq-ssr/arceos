@@ -231,6 +231,7 @@ pub fn print_fmt(args: fmt::Arguments) -> fmt::Result {
 
     let _guard = LOCK.lock();
     Logger.write_fmt(args)
+    // Logger.write_fmt(with_color!(ColorCode::Green,"{}",args,))
 }
 
 #[doc(hidden)]

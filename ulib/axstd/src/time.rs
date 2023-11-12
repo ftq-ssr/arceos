@@ -95,3 +95,8 @@ impl Sub<Instant> for Instant {
         self.duration_since(other)
     }
 }
+
+
+pub fn current_ticks() -> u64 {
+    arceos_api::time::ax_current_time().as_secs()
+}
