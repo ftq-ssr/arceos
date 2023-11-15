@@ -8,7 +8,6 @@
 
 #![cfg_attr(not(test), no_std)]
 #![feature(const_mut_refs)]
-
 mod cfs;
 mod fifo;
 mod round_robin;
