@@ -28,6 +28,7 @@
 #![feature(asm_const)]
 #![feature(naked_functions)]
 #![feature(const_maybe_uninit_zeroed)]
+#![feature(const_mut_refs)]
 #![feature(const_option)]
 #![feature(doc_auto_cfg)]
 
@@ -51,10 +52,10 @@ pub mod irq;
 
 #[cfg(feature = "paging")]
 pub mod paging;
-
 /// Console input and output.
 pub mod console {
     pub use super::platform::console::*;
+    use core::fmt;
 
     /// Write a slice of bytes to the console.
     pub fn write_bytes(bytes: &[u8]) {
@@ -62,8 +63,21 @@ pub mod console {
             putchar(*c);
         }
     }
+
+    pub fn pinfo(args: fmt::Arguments)->fmt::Result{
+        print_info(args)
+    }
+    pub fn pdev(args: fmt::Arguments)->fmt::Result{
+        print_dev(args)
+    }
+    pub fn pdebug(args: fmt::Arguments)->fmt::Result{
+        print_debug(args)
+    }
 }
 
+pub mod keyboard {
+    pub use super::platform::keyboard::*;
+}
 /// Miscellaneous operation, e.g. terminate the system.
 pub mod misc {
     pub use super::platform::misc::*;

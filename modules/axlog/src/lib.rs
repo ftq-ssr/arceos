@@ -1,7 +1,7 @@
 //! Macros for multi-level formatted logging used by
 //! [ArceOS](https://github.com/rcore-os/arceos).
 //!
-//! The log macros, in descending order of level, are: [`error!`], [`warn!`],
+//! The log macros, in cc order of level, are: [`error!`], [`warn!`],
 //! [`info!`], [`debug!`], and [`trace!`].
 //!
 //! If it is used in `no_std` environment, the users need to implement the
@@ -49,11 +49,14 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 
 extern crate log;
+extern crate num_derive;
 
 use core::fmt::{self, Write};
 use core::str::FromStr;
 
 use log::{Level, LevelFilter, Log, Metadata, Record};
+use num_derive::FromPrimitive;
+use num_traits::FromPrimitive;
 
 #[cfg(not(feature = "std"))]
 use crate_interface::call_interface;
@@ -87,8 +90,8 @@ macro_rules! with_color {
 }
 
 #[repr(u8)]
-#[allow(dead_code)]
-enum ColorCode {
+#[derive(FromPrimitive)]
+pub enum ColorCode {
     Black = 30,
     Red = 31,
     Green = 32,
@@ -105,6 +108,14 @@ enum ColorCode {
     BrightMagenta = 95,
     BrightCyan = 96,
     BrightWhite = 97,
+}
+
+impl TryFrom<u8> for ColorCode {
+    type Error = ();
+
+    fn try_from(v: u8) -> Result<Self, Self::Error> {
+        FromPrimitive::from_u8(v).ok_or(())
+    }
 }
 
 /// Extern interfaces that must be implemented in other crates.
@@ -163,7 +174,7 @@ impl Log for Logger {
             Level::Debug => ColorCode::Cyan,
             Level::Trace => ColorCode::BrightBlack,
         };
-
+        // let mut flag=false;
         cfg_if::cfg_if! {
             if #[cfg(feature = "std")] {
                 __print_impl(with_color!(
@@ -174,6 +185,7 @@ impl Log for Logger {
                     line = line,
                     args = with_color!(args_color, "{}", record.args()),
                 ));
+                // flag=true;
             } else {
                 let cpu_id = call_interface!(LogIf::current_cpu_id);
                 let tid = call_interface!(LogIf::current_task_id);
@@ -192,6 +204,7 @@ impl Log for Logger {
                             line = line,
                             args = with_color!(args_color, "{}", record.args()),
                         ));
+                        // flag=true;
                     } else {
                         // show CPU ID only
                         __print_impl(with_color!(
@@ -204,6 +217,7 @@ impl Log for Logger {
                             line = line,
                             args = with_color!(args_color, "{}", record.args()),
                         ));
+                        // flag=true;
                     }
                 } else {
                     // neither CPU ID nor task ID is shown
@@ -216,9 +230,25 @@ impl Log for Logger {
                         line = line,
                         args = with_color!(args_color, "{}", record.args()),
                     ));
+                    // flag=true;
                 }
             }
         }
+        // if !flag{
+        //     let args_color = match level {
+        //         Level::Error => ColorCode::Red,
+        //         Level::Warn => ColorCode::Yellow,
+        //         Level::Info => ColorCode::Green,
+        //         Level::Debug => ColorCode::Cyan,
+        //         Level::Trace => ColorCode::BrightBlack,
+        //     };
+        //     __print_impl(with_color!(
+        //         args_color,
+        //         "[{}] {args}\n",
+        //         level,
+        //         args=with_color!(ColorCode::Blue, "{}", record.args())
+        //     ));
+        // }
     }
 
     fn flush(&self) {}

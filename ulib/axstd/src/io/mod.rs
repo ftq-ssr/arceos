@@ -7,6 +7,7 @@ pub use axio::{BufRead, BufReader, Error, Read, Seek, SeekFrom, Write};
 
 #[doc(hidden)]
 pub use self::stdio::__print_impl;
+pub use self::stdio::{__pinfo_impl,__pdev_impl,__pdebug_impl};
 pub use self::stdio::{stdin, stdout, Stdin, StdinLock, Stdout, StdoutLock};
 
 /// A specialized [`Result`] type for I/O operations.

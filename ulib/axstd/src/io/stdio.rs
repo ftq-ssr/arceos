@@ -171,3 +171,16 @@ pub fn __print_impl(args: core::fmt::Arguments) {
         stdout().lock().write_fmt(args).unwrap();
     }
 }
+#[doc(hidden)]
+pub fn __pinfo_impl(args: core::fmt::Arguments) {
+    arceos_api::stdio::ax_console_info(args).unwrap();
+}
+
+#[doc(hidden)]
+pub fn __pdev_impl(args: core::fmt::Arguments) {
+    arceos_api::stdio::ax_console_dev(args).unwrap();
+}
+#[doc(hidden)]
+pub fn __pdebug_impl(args: core::fmt::Arguments) {
+    arceos_api::stdio::ax_console_debug(args).unwrap();
+}

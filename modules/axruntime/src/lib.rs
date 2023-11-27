@@ -112,6 +112,7 @@ pub extern "C" fn rust_main(cpu_id: usize, dtb: usize) -> ! {
         smp = {}\n\
         build_mode = {}\n\
         log_level = {}\n\
+        debug_level = {}\n\
         ",
         option_env!("AX_ARCH").unwrap_or(""),
         option_env!("AX_PLATFORM").unwrap_or(""),
@@ -119,6 +120,7 @@ pub extern "C" fn rust_main(cpu_id: usize, dtb: usize) -> ! {
         option_env!("AX_SMP").unwrap_or(""),
         option_env!("AX_MODE").unwrap_or(""),
         option_env!("AX_LOG").unwrap_or(""),
+        option_env!("AX_DEBUG").unwrap_or(""),
     );
 
     axlog::init();
@@ -146,7 +148,6 @@ pub extern "C" fn rust_main(cpu_id: usize, dtb: usize) -> ! {
         remap_kernel_memory().expect("remap kernel memoy failed");
     }
 
-    info!("Initialize platform devices...");
     axhal::platform_init();
 
     #[cfg(feature = "multitask")]
@@ -190,6 +191,8 @@ pub extern "C" fn rust_main(cpu_id: usize, dtb: usize) -> ! {
     }
 
     unsafe { main() };
+
+    loop {}
 
     #[cfg(feature = "multitask")]
     axtask::exit(0);

@@ -1,0 +1,24 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "apps"
+		},
+		{
+			"path": "modules"
+		},
+		{
+			"path": "ulib"
+		}
+	],
+	"settings": {
+		"rust-analyzer.linkedProjects": [
+			"./modules/axhal/Cargo.toml",
+			"./modules/axhal/Cargo.toml",
+			"./modules/axhal/Cargo.toml"
+		],
+		"rust-analyzer.showUnlinkedFileNotification": false
+	}
+}

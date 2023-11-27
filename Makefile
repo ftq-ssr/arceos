@@ -30,6 +30,7 @@ PLATFORM ?=
 SMP ?= 1
 MODE ?= release
 LOG ?= warn
+DEBUG ?= 1
 V ?=
 
 # App options
@@ -112,6 +113,7 @@ export AX_PLATFORM=$(PLATFORM_NAME)
 export AX_SMP=$(SMP)
 export AX_MODE=$(MODE)
 export AX_LOG=$(LOG)
+export AX_DEBUG=$(DEBUG)
 export AX_TARGET=$(TARGET)
 export AX_IP=$(IP)
 export AX_GW=$(GW)

@@ -31,6 +31,18 @@ mod stdio {
     pub fn ax_console_write_fmt(args: fmt::Arguments) -> fmt::Result {
         axlog::print_fmt(args)
     }
+
+    pub fn ax_console_info(args: fmt::Arguments) -> fmt::Result {
+        axhal::console::pinfo(args)
+    }
+
+    pub fn ax_console_dev(args: fmt::Arguments) -> fmt::Result {
+        axhal::console::pdev(args)
+    }
+
+    pub fn ax_console_debug(args: fmt::Arguments) -> fmt::Result {
+        axhal::console::pdebug(args)
+    }
 }
 
 pub use self::mem::*;
